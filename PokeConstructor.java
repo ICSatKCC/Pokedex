@@ -1,0 +1,240 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+/**
+ * PokeConstructor for the game Pokedex.java.
+ * @author Ujjwal Gautam
+ * @since 12/06/2020
+ */
+	
+	
+public class PokeConstructor extends JPanel implements ActionListener {
+		/**
+		 * Instance variable poke for storing Pokemon object.
+		 */
+   private Pokemon poke;
+		/** rangen for storing random number. */
+   private Random rangen = new Random();
+		
+		/**topPanel container in the frame.*/
+   private JPanel topPanel = new JPanel();
+		/**middlePanel container in the frame.*/
+   private JPanel midPanel = new JPanel();
+		/**bottomPanel container in the frame.*/
+   private JPanel bottomPanel = new JPanel();
+		/**topSubPanel container inside topPanel.*/
+   private JPanel topSubPanel = new JPanel();
+		/**label inside the topSubPanel.*/
+   private JLabel topLabel = new JLabel("GAME OF POKEMON!!");
+		/**Generates the type of pokemon species hunted.*/
+   private JLabel huntLabel = new JLabel();
+		/** button that hunts Pokemon. */
+   private JButton bHunt = new JButton("Hunt");
+		/** button that catches Pokemon. */
+   private JButton bCatch = new JButton("Catch");
+		/** button that prints Pokedex from stored pokemon. */
+   private JButton bPokedex = new JButton("Pokedex");
+		/** button that displays lists of pokemon according to the choice. */
+   private JButton bBackpack = new JButton("Backpack");
+		/** textArea field for displaying output of BackPack. */
+   private JTextArea textArea = new JTextArea();
+		/** textArea field for displaying output of caught Pokemon. */
+   private JTextArea catchTextArea = new JTextArea();
+		/** adds a scrollPane in the catchTextArea. */
+   private JScrollPane scrollTop = new JScrollPane(catchTextArea); 
+		
+	/**
+	 * PokeConstructor for displaying frames and panels.
+	 */
+	
+   public PokeConstructor() {
+   		
+   		/**Initialization of the frame. */
+      JFrame jFrame = new JFrame("Pokemon GUI");
+   		//sets dimension of the frame
+      jFrame.setPreferredSize(new Dimension(1400, 900));
+   		//closes the operation upon closing the window
+      jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+   		//size of topPanel
+      topPanel.setPreferredSize(new Dimension(800, 450));
+   		//using FlowLayout as a layout manager
+      jFrame.setLayout(new FlowLayout(FlowLayout.CENTER));
+   		//setting background color as gray
+      topPanel.setBackground(Color.gray);
+      topSubPanel.setPreferredSize(new Dimension(800, 400));
+   		//creating a customized background color
+      topSubPanel.setBackground(new Color(170, 172, 171));
+   		//customized font
+      topLabel.setFont(new Font("MV Boli", Font.PLAIN, 40));
+      huntLabel.setFont(new Font("MV Boli", Font.PLAIN, 60));
+   		//adds label to the panel
+      topSubPanel.add(topLabel);
+   		//embedding subPanel inside panel
+      topPanel.add(topSubPanel, BorderLayout.CENTER);
+      bCatch.setPreferredSize(new Dimension(100, 30));
+      bHunt.setPreferredSize(new Dimension(100, 30));
+      bCatch.setBackground(Color.DARK_GRAY);
+      bHunt.setBackground(Color.DARK_GRAY);
+      bCatch.setForeground(Color.RED);
+      bHunt.setForeground(Color.RED);
+   		//removes the dotted rectangle inside the button
+      bHunt.setFocusable(false);
+      bCatch.setFocusable(false);
+   		
+   		//listens to events in the buttons
+      bHunt.addActionListener(this);
+      bCatch.addActionListener(this);
+   		//toppanels and subpanels components
+      topSubPanel.add(huntLabel);
+      topSubPanel.add(catchTextArea);
+      topPanel.add(topSubPanel);
+      topPanel.add(bHunt);
+      topPanel.add(bCatch);
+   		//listens to events in the buttons
+      bHunt.addActionListener(this);
+      bCatch.addActionListener(this);
+      catchTextArea.setFont(new Font("SansSerif", Font.ITALIC, 30));
+      catchTextArea.setBackground(new Color(171, 123, 147));
+   		//Disable any edits in the textarea
+      catchTextArea.setEditable(false);
+   			
+   		//midpanel for cosmetic purpose
+      midPanel.setPreferredSize(new Dimension(800, 100));
+   	
+   	
+   		//bottomPanel components
+      bottomPanel.setPreferredSize(new Dimension(800, 250));
+      bottomPanel.setBackground(new Color(141, 130, 135));
+      bPokedex.setPreferredSize(new Dimension(100, 30));
+      bBackpack.setPreferredSize(new Dimension(100, 30));
+      bPokedex.setFocusable(false);
+      bBackpack.setFocusable(false);
+      bottomPanel.add(bPokedex);
+      bottomPanel.add(bBackpack);
+   		
+   			
+      bPokedex.addActionListener(this);
+      textArea.setPreferredSize(new Dimension(800, 200));
+      textArea.setBackground(new Color(192, 192, 192));
+      textArea.setFont(new Font("Serif", Font.BOLD, 20));
+      textArea.setEditable(false);
+      bottomPanel.add(textArea);
+   		
+   		
+   
+   		
+   	//Embedding all the containers and components into the jFrame	
+      jFrame.add(topPanel);
+      jFrame.add(midPanel);
+      jFrame.add(bottomPanel);
+   	
+   	//packs everything together
+      jFrame.pack();
+   	//Visible on the screen
+      jFrame.setVisible(true);
+   }
+		
+		/**
+		 * A method that listens to events in buttons.
+		 * @param event is where it's listening to
+		 */
+   @Override
+   	public void actionPerformed(ActionEvent event) {
+   		//if the event source is bPokedex
+      if (event.getSource() == bPokedex) {
+         textArea.setText("HAHAHA");
+      }
+      		//if the event source is bHunt			
+      else if (event.getSource() == bHunt) {
+         int num = rangen.nextInt(10 - 1 + 1) + 1;
+         switch(num) {
+            case 1:
+               poke = new Bulbasaur();
+               break;
+                     
+            case 2:
+               poke = new Ivysaur();
+               break;
+                     
+            case 3:
+               poke = new Venusaur();
+               break;
+                     
+            case 4:
+               poke = new Charmander();
+               break;
+                     
+            case 5:
+               poke = new Charmeleon();
+               break;
+                     
+            case 6:
+               poke = new Charizard();
+               break;
+                     
+            case 7:
+               poke = new Squirtle();
+               break;
+                     
+            case 8:
+               poke = new Wartortle();
+               break;
+                     
+            case 9:
+               poke = new Blastoise();
+               break;        
+                     
+                     
+            default: //not a valid menu entry                  
+               break;            
+         	
+         }
+      		
+         String result = poke.getSpecies();
+         huntLabel.setText("You created " + result + "!!");
+      	//Do not show catchtextarea while hunting for Pokemon
+         catchTextArea.setVisible(false);
+      	
+      	
+      }	
+      	//if the event source is bCatch
+      else if (event.getSource() == bCatch) {
+      		//when user taps the bCatch button show the caught Pokemon
+         catchTextArea.setVisible(true);
+      		//generates random number that determines if the Pokemon is caught
+         int number = rangen.nextInt(2 - 0 + 1) + 0;			
+         String result = poke.getSpecies();
+         if (number == 0) {
+            catchTextArea.setText(result + " escaped!!");
+         } else 
+         {
+            catchTextArea.setText("You caught a " + result + "\n" + poke.toString());	
+         
+         }
+      	
+      		
+      }	
+   			
+   
+   }  //closes action listener
+
+
+
+} //closes class
+
+
+
+
