@@ -13,6 +13,7 @@ public class PokeGUI {
 
    public static void main(String[] args) {
    
+      //initialization of PokeConstructor
       PokeConstructor object = new PokeConstructor();
    
    }
