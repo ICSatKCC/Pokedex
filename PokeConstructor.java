@@ -9,8 +9,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.PriorityQueue;
 import java.util.Random;
-//import java.util.*;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,6 +24,7 @@ import javax.swing.JTextArea;
  */
 	
 	
+@SuppressWarnings("serial")
 public class PokeConstructor extends JPanel implements ActionListener {
 		/**
 		 * Instance variable poke for storing Pokemon object.
@@ -62,15 +61,15 @@ public class PokeConstructor extends JPanel implements ActionListener {
 		/** button that displays lists of pokemon according to the choice. */
    private JButton bBackpack = new JButton("Backpack");
 		/** textArea field for displaying output of BackPack. */
-   private JTextArea textArea = new JTextArea();
+   private JTextArea textArea = new JTextArea(7, 45);
 		/** textArea field for displaying output of caught Pokemon. */
-   private JTextArea catchTextArea = new JTextArea();
+   private JTextArea catchTextArea = new JTextArea(9, 30);
 		/** adds a scrollPane in the catchTextArea. */
    private JScrollPane scrollTop = new JScrollPane(catchTextArea,
-               JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
+       JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
 		/** adds a scrollPane in the textArea. */
    private JScrollPane scrollPokedex = new JScrollPane(textArea,
-               JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+       JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		
 	/**
@@ -79,7 +78,7 @@ public class PokeConstructor extends JPanel implements ActionListener {
 	
    public PokeConstructor() {
    		
-   		/**Initialization of the frame */
+   		/**Initialization of the frame. */
       JFrame jFrame = new JFrame("Pokemon GUI");
    		//sets dimension of the frame
       jFrame.setPreferredSize(new Dimension(1400, 900));
@@ -116,23 +115,22 @@ public class PokeConstructor extends JPanel implements ActionListener {
       bCatch.addActionListener(this);
    		//toppanels and subpanels components
       topSubPanel.add(huntLabel);
-      topSubPanel.add(catchTextArea);
       topPanel.add(topSubPanel);
       topPanel.add(bHunt);
       topPanel.add(bCatch);
+   		//adding scroll pane in catchTextArea
+      topSubPanel.add(scrollTop);
+      scrollTop.setBorder(null);
+      scrollTop.getVerticalScrollBar().setPreferredSize(new Dimension(20, 0));
+   		
    		//listens to events in the buttons
-   		//catchTextArea.add(scrollTop);
       bHunt.addActionListener(this);
       bCatch.addActionListener(this);
-      catchTextArea.setFont(new Font("SansSerif", Font.ITALIC, 30));
+      catchTextArea.setFont(new Font("SansSerif", Font.ITALIC, 20));
       catchTextArea.setBackground(new Color(171, 123, 147));
    		//Disable any edits in the textarea
       catchTextArea.setEditable(false);
-   		//does not work
-      catchTextArea.add(new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-   		
-   		
+   			
    			
    		//midpanel for cosmetic purpose
       midPanel.setPreferredSize(new Dimension(800, 100));
@@ -145,24 +143,20 @@ public class PokeConstructor extends JPanel implements ActionListener {
       bBackpack.setPreferredSize(new Dimension(100, 30));
       bPokedex.setFocusable(false);
       bBackpack.setFocusable(false);
+      scrollPokedex.setBorder(null);
+   		//adding Pokedex, Backpack buttons and scrollPokedex/textArea in the bottom panel
       bottomPanel.add(bPokedex);
       bottomPanel.add(bBackpack);
-   		//bPokedex.add(scrollPokedex);	
-   			//listening to events in buttons Pokedex and Backpack
+      bottomPanel.add(scrollPokedex);
+      scrollPokedex.getVerticalScrollBar().setPreferredSize(new Dimension(20, 0));
+   
+   		//listening to events in buttons Pokedex and Backpack
       bPokedex.addActionListener(this);
       bBackpack.addActionListener(this);
-      textArea.setPreferredSize(new Dimension(700, 200));
       textArea.setBackground(new Color(192, 192, 192));
       textArea.setFont(new Font("Serif", Font.BOLD, 20));
       textArea.setEditable(false);
    	
-   
-   		//textArea.add(scroll);
-   		//adding textArea to bottom panel.
-      bottomPanel.add(textArea);
-   		
-   		
-   	//bottomPanel.add(scroll);
    		
    	//Embedding all the containers and components into the jFrame	
       jFrame.add(topPanel);
@@ -230,9 +224,8 @@ public class PokeConstructor extends JPanel implements ActionListener {
          	
             String result = poke.getSpecies();
             huntLabel.setText("You created " + result + "!!");
-         //Do not show catchTextArea while hunting for Pokemon
-            catchTextArea.setVisible(false);
-         
+         //Reset the catchTextArea while hunting
+            catchTextArea.setText(".................");
          
          }	
          //if the event source is bCatch
@@ -249,7 +242,8 @@ public class PokeConstructor extends JPanel implements ActionListener {
                aDequeBackpack.offer(poke);
                pQueue.add(poke);
             
-            } else {
+            } else 
+            {
                catchTextArea.setText(result + " escaped!!");
             
             }
@@ -261,34 +255,41 @@ public class PokeConstructor extends JPanel implements ActionListener {
          	//print list of pokemon using PokeTree 
          else if (event.getSource() == bPokedex) {
             String pokeString = pokeTree.toString();
-            textArea.setText(pokeString + "/n");
-                  
-         	
+            textArea.setText(pokeString + "\n\n");
          
-         	
          }	
          	
          //if the event source is backpack	
          else if (event.getSource() == bBackpack) {
+            Pokemon poke3;
+            Pokemon poke4;
+            String pokeStringBackpack = "";
+            String pokeStringPQueue = "";
             String[] response = {"Number", "Recent"};
          	//asks for users' sorting choice. Sort by number or recent.
-            int run = JOptionPane.showOptionDialog(null, "Select a sorting type",
-                  "Sorting Choices", JOptionPane.YES_NO_OPTION,
-                   JOptionPane.QUESTION_MESSAGE, null, response, 0);
+            int run = JOptionPane.showOptionDialog(null,
+                "Select a sorting type", "Sorting Choices",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, response, 0);
          //set textArea to null before printing users' selected method
          //for cosmetic purpose
             textArea.setText(null);
             switch(run) {
             //if the optionDialog output is 1 then print most recent list of pokemon
                case 0:
-                  Pokemon poke3 = aDequeBackpack.pop();
-                  String pokeStringBackpack = poke3.toString();
+                  do {
+                     poke3 = aDequeBackpack.pop();
+                     pokeStringBackpack = pokeStringBackpack + poke3.toString() + "\n\n";
+                  }
+                  while (aDequeBackpack.size() > 0);
                   textArea.setText(pokeStringBackpack);
                   break;
             //Prints pokemon by their number	
                case 1:
-                  Pokemon poke4 = pQueue.poll();
-                  String pokeStringPQueue = poke4.toString();
+                  do {
+                     poke4 = pQueue.poll();
+                     pokeStringPQueue = pokeStringPQueue + poke4.toString() + "\n\n";
+                  }
+                  while (pQueue.size() > 0);
                   textArea.setText(pokeStringPQueue);
                   break;
             	
@@ -299,10 +300,7 @@ public class PokeConstructor extends JPanel implements ActionListener {
          	
          }
       } //catches any possible errors
-     /* catch (NoSuchElementException nse) {
-         System.out.println("No elements");
-      }*/
-      	
+      
       catch (NullPointerException npe) {
       		
          System.out.println("No elements");
