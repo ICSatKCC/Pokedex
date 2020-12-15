@@ -66,7 +66,7 @@ public class PokeConstructor extends JPanel implements ActionListener {
    	/** textfield for user entry of name. */
    private JTextField tfName = new JTextField(15);
 		/** textArea field for displaying output of BackPack. */
-   private JTextArea textArea = new JTextArea(7, 45);
+   private JTextArea textArea = new JTextArea(10, 30);
 		/** textArea field for displaying output of caught Pokemon. */
    private JTextArea catchTextArea = new JTextArea(13, 30);
 		/** adds a scrollPane in the catchTextArea. */
@@ -101,8 +101,8 @@ public class PokeConstructor extends JPanel implements ActionListener {
    		//creating a customized background color
       topSubPanel.setBackground(new Color(170, 172, 171));
    		//customized font
-      topLabel.setFont(new Font("SansSerif", Font.PLAIN, 35));
-      huntLabel.setFont(new Font("SansSerif", Font.PLAIN, 40));
+      topLabel.setFont(new Font("SansSerif", Font.BOLD, 35));
+      huntLabel.setFont(new Font("SansSerif", Font.BOLD, 40));
    		//adds label to the panel
       topSubPanel.add(topLabel);
    		//embedding subPanel inside panel
@@ -137,9 +137,9 @@ public class PokeConstructor extends JPanel implements ActionListener {
    			
    			
    		//midpanel for naming Pokemon
-      midPanel.setPreferredSize(new Dimension(800, 100));
+      midPanel.setPreferredSize(new Dimension(800, 70));
       
-      bName.setPreferredSize(new Dimension(100, 20));
+      bName.setPreferredSize(new Dimension(100, 30));
       bName.setBackground(Color.DARK_GRAY);
       bName.setForeground(Color.BLUE);
       bName.setFocusable(false);
@@ -167,7 +167,7 @@ public class PokeConstructor extends JPanel implements ActionListener {
       bPokedex.addActionListener(this);
       bBackpack.addActionListener(this);
       textArea.setBackground(new Color(192, 192, 192));
-      textArea.setFont(new Font("SansSerif", Font.BOLD, 20));
+      textArea.setFont(new Font("SansSerif", Font.PLAIN, 15));
       textArea.setEditable(false);
    	
    		
@@ -236,7 +236,7 @@ public class PokeConstructor extends JPanel implements ActionListener {
             }
          	
             String result = poke.getSpecies();
-            huntLabel.setText("You ran into a(n) " + result + "!!");
+            huntLabel.setText("You ran into a(n) " + result + "!");
          //Reset the catchTextArea while hunting
             catchTextArea.setText("Press 'Catch' to try and catch this Pokemon!"
                 + "\nIf you want to catch a different pokemon, press 'Hunt'!");
@@ -257,7 +257,7 @@ public class PokeConstructor extends JPanel implements ActionListener {
                if (event.getSource() == bName) {
                   String name = "";
                   String newName = tfName.getText();
-                  name = newName;
+                  poke.setName(newName);
                }
                
             //adding Pokemon in pokeTree, aDeque, and priority queue
