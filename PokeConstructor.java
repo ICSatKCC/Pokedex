@@ -16,10 +16,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
  * PokeConstructor for the game Pokedex.java.
- * @author Ujjwal Gautam
+ * @author Ujjwal Gautam, Kelly Hwang
  * @since 12/06/2020
  */
 	
@@ -49,21 +50,25 @@ public class PokeConstructor extends JPanel implements ActionListener {
 		/**topSubPanel container inside topPanel.*/
    private JPanel topSubPanel = new JPanel();
 		/**label inside the topSubPanel.*/
-   private JLabel topLabel = new JLabel("GAME OF POKEMON!!");
+   private JLabel topLabel = new JLabel("GAME OF POKEMON!");
 		/**Generates the type of pokemon species hunted.*/
    private JLabel huntLabel = new JLabel();
 		/** button that hunts Pokemon. */
    private JButton bHunt = new JButton("Hunt");
 		/** button that catches Pokemon. */
    private JButton bCatch = new JButton("Catch");
+   	/** button that names Pokemon. */
+   private JButton bName = new JButton("Name:");
 		/** button that prints Pokedex from stored pokemon. */
    private JButton bPokedex = new JButton("Pokedex");
 		/** button that displays lists of pokemon according to the choice. */
    private JButton bBackpack = new JButton("Backpack");
+   	/** textfield for user entry of name. */
+   private JTextField tfName = new JTextField(15);
 		/** textArea field for displaying output of BackPack. */
    private JTextArea textArea = new JTextArea(7, 45);
 		/** textArea field for displaying output of caught Pokemon. */
-   private JTextArea catchTextArea = new JTextArea(9, 30);
+   private JTextArea catchTextArea = new JTextArea(13, 30);
 		/** adds a scrollPane in the catchTextArea. */
    private JScrollPane scrollTop = new JScrollPane(catchTextArea,
        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
@@ -81,9 +86,11 @@ public class PokeConstructor extends JPanel implements ActionListener {
    		/**Initialization of the frame. */
       JFrame jFrame = new JFrame("Pokemon GUI");
    		//sets dimension of the frame
-      jFrame.setPreferredSize(new Dimension(1400, 900));
+      jFrame.setPreferredSize(new Dimension(850, 900));
    		//closes the operation upon closing the window
       jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      jFrame.pack();
+      jFrame.setVisible(true);
    		//size of topPanel
       topPanel.setPreferredSize(new Dimension(800, 450));
    		//using FlowLayout as a layout manager
@@ -94,8 +101,8 @@ public class PokeConstructor extends JPanel implements ActionListener {
    		//creating a customized background color
       topSubPanel.setBackground(new Color(170, 172, 171));
    		//customized font
-      topLabel.setFont(new Font("MV Boli", Font.PLAIN, 40));
-      huntLabel.setFont(new Font("MV Boli", Font.PLAIN, 60));
+      topLabel.setFont(new Font("SansSerif", Font.PLAIN, 35));
+      huntLabel.setFont(new Font("SansSerif", Font.PLAIN, 40));
    		//adds label to the panel
       topSubPanel.add(topLabel);
    		//embedding subPanel inside panel
@@ -110,9 +117,6 @@ public class PokeConstructor extends JPanel implements ActionListener {
       bHunt.setFocusable(false);
       bCatch.setFocusable(false);
    		
-   		//listens to events in the buttons
-      bHunt.addActionListener(this);
-      bCatch.addActionListener(this);
    		//toppanels and subpanels components
       topSubPanel.add(huntLabel);
       topPanel.add(topSubPanel);
@@ -126,14 +130,23 @@ public class PokeConstructor extends JPanel implements ActionListener {
    		//listens to events in the buttons
       bHunt.addActionListener(this);
       bCatch.addActionListener(this);
-      catchTextArea.setFont(new Font("SansSerif", Font.ITALIC, 20));
+      catchTextArea.setFont(new Font("SansSerif", Font.ITALIC, 18));
       catchTextArea.setBackground(new Color(171, 123, 147));
    		//Disable any edits in the textarea
       catchTextArea.setEditable(false);
    			
    			
-   		//midpanel for cosmetic purpose
+   		//midpanel for naming Pokemon
       midPanel.setPreferredSize(new Dimension(800, 100));
+      
+      bName.setPreferredSize(new Dimension(100, 20));
+      bName.setBackground(Color.DARK_GRAY);
+      bName.setForeground(Color.BLUE);
+      bName.setFocusable(false);
+      bName.addActionListener(this);
+      midPanel.add(bName);
+      midPanel.add(tfName);
+      
    	
    	
    		//bottomPanel components
@@ -154,7 +167,7 @@ public class PokeConstructor extends JPanel implements ActionListener {
       bPokedex.addActionListener(this);
       bBackpack.addActionListener(this);
       textArea.setBackground(new Color(192, 192, 192));
-      textArea.setFont(new Font("Serif", Font.BOLD, 20));
+      textArea.setFont(new Font("SansSerif", Font.BOLD, 20));
       textArea.setEditable(false);
    	
    		
@@ -223,9 +236,10 @@ public class PokeConstructor extends JPanel implements ActionListener {
             }
          	
             String result = poke.getSpecies();
-            huntLabel.setText("You created " + result + "!!");
+            huntLabel.setText("You ran into a(n) " + result + "!!");
          //Reset the catchTextArea while hunting
-            catchTextArea.setText(".................");
+            catchTextArea.setText("Press 'Catch' to try and catch this Pokemon!"
+                + "\nIf you want to catch a different pokemon, press 'Hunt'!");
          
          }	
          //if the event source is bCatch
@@ -236,7 +250,16 @@ public class PokeConstructor extends JPanel implements ActionListener {
             int number = rangen.nextInt(1 - 0 + 1) + 0;			
             String result = poke.getSpecies();
             if (number == 0) {
-               catchTextArea.setText("You caught a " + result + "\n" + poke.toString());
+               catchTextArea.setText("You caught a " + result + "!\n\n" + poke.toString() 
+                   + "\n\nName your " + result + " by clicking 'Name' \n"
+                   + "    after you write in the box what you want to call them!");
+               // name Pokemon
+               if (event.getSource() == bName) {
+                  String name = "";
+                  String newName = tfName.getText();
+                  name = newName;
+               }
+               
             //adding Pokemon in pokeTree, aDeque, and priority queue
                pokeTree.add(poke, poke.getNumber());
                aDequeBackpack.offer(poke);
@@ -244,7 +267,8 @@ public class PokeConstructor extends JPanel implements ActionListener {
             
             } else 
             {
-               catchTextArea.setText(result + " escaped!!");
+               catchTextArea.setText(result + " escaped!"
+                   + "\nPress 'Hunt' to try and hunt for another Pokemon!");
             
             }
          
